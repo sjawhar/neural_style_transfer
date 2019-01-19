@@ -6,7 +6,7 @@ services:
     image: pytorch-notebook
     container_name: neural-style-transfer
     volumes:
-      - .:/home/jovyan/work
+      - ./app:/home/jovyan/work
     ports:
       - 8888:8888
     command: [start.sh, jupyter, lab, --LabApp.token='']
