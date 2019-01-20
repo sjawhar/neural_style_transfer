@@ -1,0 +1,28 @@
+{
+  "name": "neural-style-transfer-server",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "license": "ISC",
+  "scripts": {
+    "format": "prettier-eslint --write \"+(src|test)/**/*.{js,json}\"",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "aws-sdk": "2.262.1",
+    "compression": "^1.7.2",
+    "express": "4.16.3",
+    "socket.io": "2.1.1",
+    "socket.io-redis": "5.2.0",
+    "sqs-consumer": "^4.0.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.13.0",
+    "prettier": "^1.14.3",
+    "prettier-eslint": "^8.8.2",
+    "prettier-eslint-cli": "^4.7.1"
+  }
+}

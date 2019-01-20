@@ -2,11 +2,13 @@ version: '2.4'
 
 services:
   default:
-    build: .
-    image: pytorch-notebook
-    container_name: neural-style-transfer
+    build:
+      context: agent
+      dockerfile: Dockerfile
+    image: neural-style-transfer-agent
+    container_name: neural-style-transfer-agent
     volumes:
-      - ./app:/home/jovyan/work
+      - ./agent:/home/jovyan/work
     ports:
       - 8888:8888
     command: [start.sh, jupyter, lab, --LabApp.token='']
