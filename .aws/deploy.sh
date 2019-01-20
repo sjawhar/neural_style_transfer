@@ -25,8 +25,8 @@ echo "Deploying..."
 aws cloudformation deploy \
   --template-file $OUTPUT_TEMPLATE \
   --stack-name "${ENVIRONMENT}-style-transfer" \
-  --parameter-overrides "Environment=${ENVIRONMENT}" \
   --capabilities CAPABILITY_NAMED_IAM \
+  --parameter-overrides "Environment=${ENVIRONMENT}" \
   "${@:2}"
 
 rm -f $OUTPUT_TEMPLATE
