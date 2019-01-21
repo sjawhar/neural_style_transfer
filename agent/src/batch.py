@@ -16,12 +16,12 @@ def main(style, content_key, request_id):
         content_object.download_fileobj(f)
     content = load_image(content_tmp.name).to(device)
 
-    # Resize style to match content, makes code easier
     style_key = 'style/%s.jpg' % style
     style_object = bucket.Object(style_key)
     style_tmp = tempfile.NamedTemporaryFile()
     with open(style_tmp.name, 'wb') as f:
         style_object.download_fileobj(f)
+    # Resize style to match content, makes code easier
     style = load_image(style_tmp.name, shape=content.shape[-2:]).to(device)
 
     # get the "features" portion of VGG19 (we will not need the "classifier" portion)

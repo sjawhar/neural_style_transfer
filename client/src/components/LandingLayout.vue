@@ -1,25 +1,22 @@
 <template>
-  <div>
-    <div class="wrapper wrapper-full-page">
-      <div class="full-page">
-        <div class="content">
-            <div class="container-fluid">
-              <transition
-                name="fade"
-                mode="out-in"
-              >
-                <!-- your content here -->
-                <router-view/>
-              </transition>
-            </div>
-          </div>
+  <div class="wrapper wrapper-full-page">
+    <div class="full-page">
+      <div class="content">
+        <div class="container-fluid">
+          <transition
+            name="fade"
+            mode="out-in"
+          >
+            <!-- your content here -->
+            <router-view/>
+          </transition>
         </div>
-        <div
-          class="full-page-background"
-          style="background-image: url(/img/background/background-2.jpg)"
-        />
       </div>
     </div>
+    <div
+      class="full-page-background"
+      style="background-image: url(/img/background/background-2.jpg)"
+    />
   </div>
 </template>
 

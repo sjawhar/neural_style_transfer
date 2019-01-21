@@ -44,8 +44,7 @@ export default {
     socket.connect();
   },
   methods: {
-    submitForm() {
-    },
+    submitForm() {},
   },
 };
 </script>

@@ -1,0 +1,39 @@
+version: '2.4'
+
+services:
+  server:
+    image: node:10.15.0
+    environment:
+      AWS_PROFILE: personal
+      PORT: 3000
+    env_file:
+      - ./server/resources.env
+    volumes:
+      - ./server:/app
+      - ${HOME}/.aws:/home/node/.aws
+    ports:
+      - 3000:3000
+    working_dir: /app
+    user: node
+    command: [npm, run, dev]
+
+  client:
+    image: node:10.15.0
+    volumes:
+      - ./client:/app
+    ports:
+      - 8080:8080
+    working_dir: /app
+    command: [npm, run, dev]
+
+  agent:
+    build:
+      context: agent
+      dockerfile: Dockerfile
+    image: neural-style-transfer-agent
+    container_name: neural-style-transfer-agent
+    volumes:
+      - ./agent:/home/jovyan/work
+    ports:
+      - 8888:8888
+    command: [start.sh, jupyter, lab, --LabApp.token='']

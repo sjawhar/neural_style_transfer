@@ -8,11 +8,11 @@ const connect = () => {
     return;
   }
 
-  socket = io();
+  socket = io(process.env.VUE_APP_SOCKET_HOST);
   socket.once(DISCONNECTED, () => {
     socket = null;
   });
-  if (process.env.VUE_APP_API_SOCKET_EXPOSE === 'true') {
+  if (process.env.VUE_APP_SOCKET_EXPOSE === 'true') {
     window.socket = socket;
   }
 };
@@ -36,13 +36,13 @@ const proxyMethods = {};
   proxyMethods[method] = (...args) => socket[method](...args);
 });
 
-const request = (event, params) => {
+const request = (event, ...args) => {
   if (!socket) {
-    throw new Error('socket not connected');
+    connect();
   }
 
   return new Promise((resolve, reject) => {
-    socket.emit(event, params, (error, data) => {
+    socket.emit(event, ...args, (error, data) => {
       if (error) return reject(error);
       return resolve(data);
     });

@@ -1,9 +1,10 @@
 import VueRouter from 'vue-router';
 
 // Layouts
-import FeedPage from '@/components/FeedPage';
+import Feed from '@/components/FeedPage';
 import LandingLayout from '@/components/LandingLayout';
-import RequestPage from '@/components/RequestPage';
+import NotFound from '@/components/NotFoundPage';
+import Request from '@/components/RequestPage';
 
 const routes = [
   {
@@ -18,12 +19,12 @@ const routes = [
       {
         path: 'request',
         name: 'request',
-        component: RequestPage,
+        component: Request,
       },
       {
         path: 'feed',
         name: 'feed',
-        component: FeedPage,
+        component: Feed,
       },
     ],
   },
