@@ -1,7 +1,9 @@
-from style_transfer import load_image, transfer
+from PIL import Image
+from style_transfer import load_image, transfer, im_convert
 from torchvision import models
 import argparse, boto3, os, tempfile, torch, json
 import torch.optim as optim
+import numpy as np
 
 def main(style, content_key, request_id):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -66,13 +68,15 @@ def main(style, content_key, request_id):
         optimizer,
         steps,
     )
-    result_tmp = tempfile.NamedTemporaryFile()
+    result = Image.fromarray((255 * im_convert(result)).astype(np.uint8))
+
+    file_ext = '.%s' % content_key.split('.')[-1]
+    result_tmp = tempfile.NamedTemporaryFile(suffix=file_ext)
     result.save(result_tmp.name)
     result_key = content_key.replace('/input/', '/output/')
 
     with open(result_tmp.name, 'rb') as result:
-        s3.put_object(
-            Bucket=bucket_name,
+        bucket.put_object(
             Key=result_key,
             Body=result,
         )

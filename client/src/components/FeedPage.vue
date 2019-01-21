@@ -1,30 +1,17 @@
 <template>
   <div class="card">
-    <div class="card-header">
-      <h3 class="title">Submit Image</h3>
-    </div>
     <div class="card-body">
       <div class="content">
-        <form @submit.prevent="submitForm">
-          <div class="row">
-            <div class="col-lg-6">
-              Style
-            </div>
-            <div class="col-lg-6">
-              Content
-            </div>
+        <div class="row">
+          <div class="col-md-6 text-center">
+            <h3>Before</h3>
+            <img :src="currentImageBefore">
           </div>
-          <div class="text-right">
-            <button
-              :disabled="isSubmitDisabled"
-              type="submit"
-              class="btn btn-info btn-fill btn-wd mt-2"
-            >
-              Request
-            </button>
+          <div class="col-md-6 text-center">
+            <h3>After</h3>
+            <img :src="currentImageAfter">
           </div>
-          <div class="clearfix"/>
-        </form>
+        </div>
       </div>
     </div>
   </div>
@@ -32,22 +19,49 @@
 
 <script>
 import socket from '@/util/socket';
+import {
+  LIST_IMAGES,
+  TRANSFER_STYLE_COMPLETED,
+} from '@/constants/socketEvents';
 
 export default {
   data: () => ({
-    style: 'starry-night',
-    result: null,
-    error: false,
-    waiting: false,
+    images: [],
+    imageIndex: 0,
   }),
-  mounted() {
-    socket.connect();
+  computed: {
+    currentImageAfter() {
+      return this.images[this.imageIndex];
+    },
+    currentImageBefore() {
+      return (
+        this.currentImageAfter &&
+        this.currentImageAfter.replace('/output/', '/input/')
+      );
+    },
+  },
+  async mounted() {
+    this.images = await socket.request(LIST_IMAGES);
+    socket.on(TRANSFER_STYLE_COMPLETED, this.handleNewImage);
+    setInterval(() => {
+      this.imageIndex = (this.imageIndex + 1) % (this.images.length || 1);
+    }, 5000);
+  },
+  destroyed() {
+    socket.off(TRANSFER_STYLE_COMPLETED, this.handleNewImage);
   },
   methods: {
-    submitForm() {},
+    handleNewImage({ result }) {
+      const newImages = this.images.slice();
+      newImages.splice(this.imageIndex + 1, 0, result);
+      this.images = newImages;
+    },
   },
 };
 </script>
 
 <style>
+img {
+  max-width: 100%;
+}
 </style>

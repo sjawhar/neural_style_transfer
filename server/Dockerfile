@@ -11,5 +11,6 @@ COPY --chown=node:node --from=packages /source ./
 COPY --chown=node:node src ./src
 COPY --chown=node:node dist ./src/public
 
-EXPOSE 80
+EXPOSE 3000
+USER node
 CMD ["node", "src/index.js"]

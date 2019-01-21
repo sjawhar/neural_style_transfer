@@ -3,6 +3,7 @@ version: '2.4'
 services:
   server:
     image: node:10.15.0
+    container_name: neural-style-transfer-server
     environment:
       AWS_PROFILE: personal
       PORT: 3000
@@ -30,10 +31,18 @@ services:
     build:
       context: agent
       dockerfile: Dockerfile
-    image: neural-style-transfer-agent
+    image: sjawhar/neural-style-transfer-agent
     container_name: neural-style-transfer-agent
+    environment:
+      AWS_PROFILE: personal
+    env_file:
+      - ./agent/resources.env
     volumes:
       - ./agent:/home/jovyan/work
+      - ./agent/src:/app
+      - ${HOME}/.aws:/home/jovyan/.aws
     ports:
       - 8888:8888
-    command: [start.sh, jupyter, lab, --LabApp.token='']
+    working_dir: /home/jovyan
+    entrypoint: [start.sh]
+    command: [jupyter, lab, --LabApp.token='']

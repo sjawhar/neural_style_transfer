@@ -5,27 +5,29 @@
     </div>
     <div class="card-body">
       <div class="content">
-        <div 
-          v-if="error" 
+        <div
+          v-show="error"
           class="error text-danger"
-        >{{ error }}</div>
+        >
+          {{ error }}
+        </div>
         <form @submit.prevent="submitForm">
           <div class="row">
             <div class="col-lg-6">
               <h3>Upload an Image</h3>
               <div class="input-group">
                 <div class="content-file">
-                  <input 
-                    id="content-file" 
-                    ref="contentFile" 
-                    type="file" 
-                    class="content-file-input" 
+                  <input
+                    id="content-file"
+                    ref="contentFile"
+                    type="file"
+                    class="content-file-input"
                     @change="handleContentFile"
                   >
                 </div>
               </div>
-              <img 
-                v-if="imageString" 
+              <img
+                v-if="imageString"
                 :src="imageString"
               >
             </div>
@@ -56,6 +58,24 @@
           </div>
           <div class="clearfix"/>
         </form>
+        <div
+          v-if="waiting || result"
+          class="row"
+        >
+          <div class="col-12 text-center">
+            <h1>Result</h1>
+            <div
+              v-show="waiting"
+              class="text-center"
+            >
+              <h3>Please wait, science in progress...</h3>
+            </div>
+            <img
+              v-if="result"
+              :src="result"
+            >
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -63,7 +83,11 @@
 
 <script>
 import socket from '@/util/socket';
-import { TRANSFER_STYLE, LIST_STYLES } from '@/constants/socketEvents';
+import {
+  TRANSFER_STYLE,
+  TRANSFER_STYLE_COMPLETED,
+  LIST_STYLES,
+} from '@/constants/socketEvents';
 
 export default {
   data: () => ({
@@ -82,7 +106,7 @@ export default {
       return this.styles.map(url => ({
         name: url
           .split('/')
-          .slice(-1)[0]
+          .pop()
           .split('.')[0],
         url,
       }));
@@ -92,7 +116,7 @@ export default {
         this.style &&
         this.style
           .split('/')
-          .slice(-1)[0]
+          .pop()
           .split('.')[0]
       );
     },
@@ -129,12 +153,17 @@ export default {
     async submitForm() {
       this.error = false;
       this.waiting = true;
+      this.result = null;
       try {
-        await socket.request(TRANSFER_STYLE, {
+        const { requestId } = await socket.request(TRANSFER_STYLE, {
           style: this.styleName,
           image: this.imageString,
           isPrivate: false,
         });
+        const { result } = await new Promise(resolve => {
+          socket.on(`${TRANSFER_STYLE_COMPLETED}::${requestId}`, resolve);
+        });
+        this.result = result;
       } catch (error) {
         this.error = error.message;
       }
@@ -145,4 +174,7 @@ export default {
 </script>
 
 <style>
+img {
+  max-width: 100%;
+}
 </style>
