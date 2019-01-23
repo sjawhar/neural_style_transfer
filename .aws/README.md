@@ -34,3 +34,8 @@ The server containers are constantly polling SQS for messages. When the above me
 ```
 
 If `isPrivate` was set to `true` in the request, then the image is stored in a path that is not publicly accessible and the result URL is presigned so that only the requesting client can access it. If `isPrivate` was false, then the image is publicly accessible and `TRANSFER_STYLE_COMPLETED` is broadcast to all connected clients. This event is consumed by the Feed page to add newly processed images to its rotating gallery.
+
+Much thanks to the following sources for assistance and inspiration:
+* https://medium.com/containers-on-aws/scaling-a-realtime-chat-app-on-aws-using-socket-io-redis-and-aws-fargate-4ed63fb1b681
+* https://github.com/dejonghe/aws-batch-example
+* https://github.com/tomas55/aws-gpu-docker-guide

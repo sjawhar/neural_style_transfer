@@ -1,7 +1,7 @@
 # Style Transfer with Neural Nets
 This repository contains a PyTorch implementation of the style transfer method that is outlined in the paper, [Image Style Transfer Using Convolutional Neural Networks](https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Gatys_Image_Style_Transfer_CVPR_2016_paper.pdf), by Gatys.
 
-In addition, CloudFormation templates for a produdction-level pipeline are available under the [.aws direction](.aws).
+In addition, CloudFormation templates for a produdction-level pipeline are available under the [.aws directory](.aws).
 
 ## Results
 ![Example 1](./agent/out/output.jpg)
