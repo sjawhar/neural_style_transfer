@@ -30,8 +30,8 @@ services:
   agent:
     build:
       context: agent
-      dockerfile: Dockerfile
-    image: sjawhar/neural-style-transfer-agent
+      dockerfile: dev.Dockerfile
+    image: sjawhar/neural-style-transfer-agent-dev
     container_name: neural-style-transfer-agent
     environment:
       AWS_PROFILE: personal
