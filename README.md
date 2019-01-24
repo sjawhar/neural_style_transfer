@@ -7,7 +7,7 @@ In addition, CloudFormation templates for a production-level pipeline are availa
 
 ![pipeline](docs/style-transfer-pipeline.jpeg)
 
-Clients make websocket connections to a socket.io server deployed on Fargate. That means no servers to manage and auto-scalability. The client calls the server with the `TRANSFER_STYLE` event and the following body:
+Clients make websocket connections to load-balanced socket.io containers deployed on Fargate. That means no servers to manage and auto-scalability. The client calls the server with the `TRANSFER_STYLE` event and the following body:
 ```js
 {
     image: String, // data URL containing base64-encoded content image data and MIME type
