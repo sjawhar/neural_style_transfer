@@ -1,7 +1,7 @@
 # Style Transfer with Neural Nets
-This repository contains a PyTorch implementation of the style transfer method that is outlined in the paper, [Image Style Transfer Using Convolutional Neural Networks](https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Gatys_Image_Style_Transfer_CVPR_2016_paper.pdf), by Gatys.
+This repository contains a PyTorch implementation of the style transfer method that is outlined in the paper, [Image Style Transfer Using Convolutional Neural Networks](https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Gatys_Image_Style_Transfer_CVPR_2016_paper.pdf), by Gatys. The relevant neural network implementation is available in [style_transfer.py](./agent/src/style_transfer.py), and we've also included an [IPython notebook](./agent/style-transfer-demo.ipynb) demonstrating its use.
 
-In addition, CloudFormation templates for a produdction-level pipeline are available under the [.aws directory](./.aws).
+In addition, CloudFormation templates for a production-level pipeline are available under the [.aws directory](./.aws).
 
 ## Style Transfer Pipeline
 
@@ -11,14 +11,14 @@ Clients make websocket connections to a socket.io server deployed on Fargate. Th
 ```js
 {
     image: String, // data URL containing base64-encoded content image data and MIME type
-    style: String, // the style image that should be transfered to the content image
+    style: String, // the style image that should be transferred to the content image
     isPrivate: Boolean, // whether or not the content and result images should be publicly accessible
 }
 ```
 
 The server assigns a unique `jobId` to the request, saves the incoming image to `public/input/${jobId}.jpg` in the S3 bucket, or `private` if `isPrivate` is `false`. It also submits a new batch job with the following parameters:
 * `contentKey`: the key of the content image in the s3 bucket
-* `style`: the style image that should be transferred ot the content image
+* `style`: the style image that should be transferred to the content image
 * `requestId`: a compound identifier made from `${socket.id}::${jobId}`. See below for how this is used.
 
 Finally, the server responds to the client and passes along `requestId`. The client then starts listening for the `TRANSFER_STYLE_COMPLETED::${jobId}` event.
